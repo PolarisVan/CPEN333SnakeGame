@@ -168,16 +168,17 @@ class Game():
         self.isGameOver(NewSnakeCoordinates)
 
         self.snakeCoordinates.append(NewSnakeCoordinates)
-        print(len(self.snakeCoordinates))
-
+        
+        # this is the prey fixing here only if u want(u can add a local method if u want)
         if NewSnakeCoordinates == self.prey:
             self.score = self.score + 1
             self.createNewPrey()
+            
+        # end here
         else:
             self.snakeCoordinates.pop(0)
 
         self.queue.put({"move": self.snakeCoordinates})
-        print(self.snakeCoordinates)
         self.queue.put({"score": self.score})
 
     def calculateNewCoordinates(self) -> tuple:
