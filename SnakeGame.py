@@ -203,6 +203,8 @@ class Game():
 
 
 if __name__ == "__main__":
+
+    print("this is purely a test to see if I remember how to use Git")
     #some constants for our GUI
     WINDOW_WIDTH = 500           
     WINDOW_HEIGHT = 300 
