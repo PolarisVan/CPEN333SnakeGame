@@ -177,6 +177,7 @@ class Game():
             self.snakeCoordinates.pop(0)
 
         self.queue.put({"move": self.snakeCoordinates})
+        print(self.snakeCoordinates)
         self.queue.put({"score": self.score})
 
     def calculateNewCoordinates(self) -> tuple:
@@ -191,16 +192,16 @@ class Game():
         lastX, lastY = self.snakeCoordinates[-1]
 
         if self.direction == "Left":
-            lastX = lastX - 1
+            lastX = lastX - SNAKE_ICON_WIDTH
 
         elif self.direction == "Right":
-            lastX = lastX + 1
+            lastX = lastX + SNAKE_ICON_WIDTH
 
         elif self.direction == "Up":
-            lastY = lastY -1
+            lastY = lastY - SNAKE_ICON_WIDTH
 
         else:
-            lastY = lastY + 1
+            lastY = lastY + SNAKE_ICON_WIDTH
 
         return (lastX, lastY)
 
