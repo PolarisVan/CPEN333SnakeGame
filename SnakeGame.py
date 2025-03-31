@@ -168,13 +168,13 @@ class Game():
         self.isGameOver(NewSnakeCoordinates)
 
         self.snakeCoordinates.append(NewSnakeCoordinates)
-        
-        # this is the prey fixing here only if u want(u can add a local method if u want)
-        if NewSnakeCoordinates == self.prey:
+
+        distance_between = tuple(map(lambda i, j: abs(i - j), NewSnakeCoordinates, self.prey))
+
+        if all(x < y for x, y in zip(distance_between, (2*SNAKE_ICON_WIDTH/3, 2*SNAKE_ICON_WIDTH/3))):
             self.score = self.score + 1
             self.createNewPrey()
-            
-        # end here
+
         else:
             self.snakeCoordinates.pop(0)
 
