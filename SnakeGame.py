@@ -239,7 +239,10 @@ class Game():
             x = random.randint(THRESHOLD, WINDOW_WIDTH - THRESHOLD)
             y = random.randint(THRESHOLD, WINDOW_HEIGHT - THRESHOLD)
             self.prey = (x, y)
-            if self.prey not in self.snakeCoordinates:
+            for item in self.snakeCoordinates:
+                distance_between = tuple(map(lambda i, j: abs(i - j), item, self.prey))
+                if all(x < y for x, y in zip(distance_between, ((PREY_ICON_WIDTH+SNAKE_ICON_LENGTH)/2, (PREY_ICON_WIDTH+SNAKE_ICON_WIDTH)/2))):
+                    break
                 Overlap = False
         self.queue.put({"prey": (x - PREY_ICON_WIDTH/2, y - PREY_ICON_WIDTH/2, x + PREY_ICON_WIDTH/2, y + PREY_ICON_WIDTH/2)})
 
