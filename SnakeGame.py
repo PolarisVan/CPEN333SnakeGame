@@ -1,5 +1,5 @@
 # Group#: B21
-# Student Names:
+# Student Names: Peiyu Qu and Dalisio Pereira Neto
 
 """
     This program implements a variety of the snake
