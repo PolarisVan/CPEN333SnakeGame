@@ -12,7 +12,6 @@ import queue  # the thread-safe queue from Python standard library
 from tkinter import Tk, Canvas, Button
 import random, time
 
-
 class Gui():
     """
         This class takes care of the game's graphic user interface (gui)
@@ -57,7 +56,6 @@ class Gui():
                                 command=self.root.destroy)
         self.canvas.create_window(200, 100, anchor="nw", window=gameOverButton)
 
-
 class QueueHandler():
     """
         This class implements the queue handler for the game.
@@ -97,7 +95,6 @@ class QueueHandler():
         except queue.Empty:
             gui.root.after(100, self.queueHandler)
 
-
 class Game():
     '''
         This class implements most of the game functionalities.
@@ -133,7 +130,6 @@ class Game():
             self.move()
             time.sleep(SPEED)  # frame rate
 
-
     def whenAnArrowKeyIsPressed(self, e: object) -> None:
         """
             This method is bound to the arrow keys
@@ -165,15 +161,41 @@ class Game():
             and position) should be correctly updated.
         """
         NewSnakeCoordinates = self.calculateNewCoordinates()
+        #everything under this was implemented
         self.isGameOver(NewSnakeCoordinates)
 
         self.snakeCoordinates.append(NewSnakeCoordinates)
 
-        distance_between = tuple(map(lambda i, j: abs(i - j), NewSnakeCoordinates, self.prey))
+        # distance_between = tuple(map(lambda i, j: abs(i - j), NewSnakeCoordinates, self.prey))
 
-        if all(x < y for x, y in zip(distance_between, ((PREY_ICON_WIDTH+SNAKE_ICON_LENGTH)/2, (PREY_ICON_WIDTH+SNAKE_ICON_WIDTH)/2))):
-            self.score = self.score + 1
-            self.createNewPrey()
+        head_x, head_y = NewSnakeCoordinates
+        snakeBody = (
+            head_x - SNAKE_ICON_LENGTH / 2,
+            head_y - SNAKE_ICON_WIDTH / 2,
+            head_x + SNAKE_ICON_LENGTH / 2,
+            head_y + SNAKE_ICON_WIDTH / 2
+        )
+
+        prey_x, prey_y = self.prey
+        prey_side = PREY_ICON_WIDTH / 2
+        prey_rect = (
+            prey_x - prey_side, 
+            prey_y - prey_side, 
+            prey_x + prey_side, 
+            prey_y + prey_side
+        )
+
+        if not (
+            snakeBody[2] < prey_rect[0] or
+            snakeBody[0] > prey_rect[2] or
+            snakeBody[3] < prey_rect[1] or
+            snakeBody[1] > prey_rect[3]
+        ):
+                self.score += 1
+                self.createNewPrey()
+        # if all(x < y for x, y in zip(distance_between, ((PREY_ICON_WIDTH+SNAKE_ICON_LENGTH)/2, (PREY_ICON_WIDTH+SNAKE_ICON_WIDTH)/2))):
+        #     self.score += 1
+        #     self.createNewPrey()
 
         else:
             self.snakeCoordinates.pop(0)
@@ -191,7 +213,7 @@ class Game():
             It is used by the move() method.
         """
         lastX, lastY = self.snakeCoordinates[-1]
-
+        #everything under this was implemented
         if self.direction == "Left":
             lastX = lastX - SNAKE_ICON_LENGTH
 
@@ -206,7 +228,6 @@ class Game():
 
         return (lastX, lastY)
 
-
     def isGameOver(self, snakeCoordinates: tuple) -> None:
         """
             This method checks if the game is over by
@@ -216,10 +237,10 @@ class Game():
             field and also adds a "game_over" task to the queue.
         """
         x, y = snakeCoordinates
+        #returns game over if snake body is in the same position as the window's border, False otherwise
         if x < 0 or x > WINDOW_WIDTH or y < 0 or y > WINDOW_HEIGHT or snakeCoordinates in self.snakeCoordinates:
             self.gameNotOver = False
             self.queue.put({"game_over"})
-
 
     def createNewPrey(self) -> None:
         """
@@ -233,27 +254,32 @@ class Game():
             away from the walls.
         """
         THRESHOLD = 15  # sets how close prey can be to borders
-
+        # assumes initial overlapping to be checked
+        x_min, y_min = 0,0
+        x_max, y_max = 60,15
         Overlap = True
         while Overlap:
+            # creates random temporary prey coordinates to be checked for overlapping
             x = random.randint(THRESHOLD, WINDOW_WIDTH - THRESHOLD)
             y = random.randint(THRESHOLD, WINDOW_HEIGHT - THRESHOLD)
             self.prey = (x, y)
+
             for item in self.snakeCoordinates:
                 distance_between = tuple(map(lambda i, j: abs(i - j), item, self.prey))
-                if all(x < y for x, y in zip(distance_between, ((PREY_ICON_WIDTH+SNAKE_ICON_LENGTH)/2, (PREY_ICON_WIDTH+SNAKE_ICON_WIDTH)/2))):
+                # ensures that the prey is not created under the snake's body or under score board
+                if all(x < y for x, y in zip(distance_between, ((PREY_ICON_WIDTH+SNAKE_ICON_LENGTH)/2, (PREY_ICON_WIDTH+SNAKE_ICON_WIDTH)/2)) or x_min <= x <= x_max or y_min <= y <= y_max):
                     break
                 Overlap = False
+        # adds prey to window when no overlap
         self.queue.put({"prey": (x - PREY_ICON_WIDTH/2, y - PREY_ICON_WIDTH/2, x + PREY_ICON_WIDTH/2, y + PREY_ICON_WIDTH/2)})
-
 
 if __name__ == "__main__":
     # some constants for our GUI
     WINDOW_WIDTH = 500
     WINDOW_HEIGHT = 300
     SNAKE_ICON_WIDTH = 15
-    SNAKE_ICON_LENGTH = 10  # Constant(should not change)
-    PREY_ICON_WIDTH = 10
+    SNAKE_ICON_LENGTH = 10  # Constant(should not change) implemented
+    PREY_ICON_WIDTH = 10 # implemented
 
     BACKGROUND_COLOUR = "green"  # you may change this colour if you wish
     ICON_COLOUR = "yellow"  # you may change this colour if you wish
