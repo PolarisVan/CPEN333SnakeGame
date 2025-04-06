@@ -47,7 +47,7 @@ class Gui():
         for key in ("Left", "Right", "Up", "Down"):
             self.root.bind(f"<Key-{key}>", game.whenAnArrowKeyIsPressed)
 
-    def gameOver(self):
+    def gameOver(self) -> None:
         """
             This method is used at the end to display a
             game over button.
@@ -68,7 +68,7 @@ class QueueHandler():
         self.gui = gui
         self.queueHandler()
 
-    def queueHandler(self):
+    def queueHandler(self) -> None:
         '''
             This method handles the queue by constantly retrieving
             tasks from it and accordingly taking the corresponding
@@ -134,7 +134,7 @@ class Game():
             time.sleep(SPEED)  # frame rate
 
 
-    def whenAnArrowKeyIsPressed(self, e) -> None:
+    def whenAnArrowKeyIsPressed(self, e: object) -> None:
         """
             This method is bound to the arrow keys
             and is called when one of those is clicked.
@@ -207,7 +207,7 @@ class Game():
         return (lastX, lastY)
 
 
-    def isGameOver(self, snakeCoordinates) -> None:
+    def isGameOver(self, snakeCoordinates: tuple) -> None:
         """
             This method checks if the game is over by
             checking if now the snake has passed any wall
