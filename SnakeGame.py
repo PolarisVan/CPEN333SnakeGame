@@ -171,7 +171,7 @@ class Game():
 
         distance_between = tuple(map(lambda i, j: abs(i - j), NewSnakeCoordinates, self.prey))
 
-        if all(x < y for x, y in zip(distance_between, (2*SNAKE_ICON_WIDTH/3, 2*SNAKE_ICON_WIDTH/3))):
+        if all(x < y for x, y in zip(distance_between, ((PREY_ICON_WIDTH+SNAKE_ICON_LENGTH)/2, (PREY_ICON_WIDTH+SNAKE_ICON_WIDTH)/2))):
             self.score = self.score + 1
             self.createNewPrey()
 
@@ -193,16 +193,16 @@ class Game():
         lastX, lastY = self.snakeCoordinates[-1]
 
         if self.direction == "Left":
-            lastX = lastX - SNAKE_ICON_WIDTH
+            lastX = lastX - SNAKE_ICON_LENGTH
 
         elif self.direction == "Right":
-            lastX = lastX + SNAKE_ICON_WIDTH
+            lastX = lastX + SNAKE_ICON_LENGTH
 
         elif self.direction == "Up":
-            lastY = lastY - SNAKE_ICON_WIDTH
+            lastY = lastY - SNAKE_ICON_LENGTH
 
         else:
-            lastY = lastY + SNAKE_ICON_WIDTH
+            lastY = lastY + SNAKE_ICON_LENGTH
 
         return (lastX, lastY)
 
@@ -241,7 +241,7 @@ class Game():
             self.prey = (x, y)
             if self.prey not in self.snakeCoordinates:
                 Overlap = False
-        self.queue.put({"prey": (x - SNAKE_ICON_WIDTH/2, y - SNAKE_ICON_WIDTH/2, x + SNAKE_ICON_WIDTH/2, y + SNAKE_ICON_WIDTH/2)})
+        self.queue.put({"prey": (x - PREY_ICON_WIDTH/2, y - PREY_ICON_WIDTH/2, x + PREY_ICON_WIDTH/2, y + PREY_ICON_WIDTH/2)})
 
 
 if __name__ == "__main__":
@@ -249,7 +249,8 @@ if __name__ == "__main__":
     WINDOW_WIDTH = 500
     WINDOW_HEIGHT = 300
     SNAKE_ICON_WIDTH = 15
-    # add the specified constant PREY_ICON_WIDTH here
+    SNAKE_ICON_LENGTH = 10  # Constant(should not change)
+    PREY_ICON_WIDTH = 10
 
     BACKGROUND_COLOUR = "green"  # you may change this colour if you wish
     ICON_COLOUR = "yellow"  # you may change this colour if you wish
