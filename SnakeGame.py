@@ -257,7 +257,7 @@ class Game():
             for item in self.snakeCoordinates:
                 distance_between = tuple(map(lambda i, j: abs(i - j), item, self.prey))
                 # ensures that the prey is not created under the snake's body or under score board
-                if all(x < y for x, y in zip(distance_between, ((PREY_ICON_WIDTH+SNAKE_ICON_LENGTH)/2, (PREY_ICON_WIDTH+SNAKE_ICON_WIDTH)/2)) and x_min <= x <= x_max and y_min <= y <= y_max):
+                if (all(x < y for x, y in zip(distance_between, ((PREY_ICON_WIDTH+SNAKE_ICON_LENGTH)/2, (PREY_ICON_WIDTH+SNAKE_ICON_WIDTH)/2))) and x_min <= x <= x_max and y_min <= y <= y_max):
                     break
                 Overlap = False
         # adds prey to window when no overlap
