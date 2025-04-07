@@ -161,13 +161,13 @@ class Game():
             and position) should be correctly updated.
         """
         NewSnakeCoordinates = self.calculateNewCoordinates()
-        #everything under this was implemented
-        self.isGameOver(NewSnakeCoordinates)
 
+        self.isGameOver(NewSnakeCoordinates) # checks if game is over
         self.snakeCoordinates.append(NewSnakeCoordinates)
 
         distance_between = tuple(map(lambda i, j: abs(i - j), NewSnakeCoordinates, self.prey))
 
+        # verifies that snake ate prey when going left and right
         if self.direction == "Left" or self.direction == "Right":
 
             if all(x < y for x, y in zip(distance_between, ((PREY_ICON_WIDTH+SNAKE_ICON_LENGTH)/2, (PREY_ICON_WIDTH+SNAKE_ICON_WIDTH)/2))):
@@ -180,6 +180,7 @@ class Game():
             self.queue.put({"move": self.snakeCoordinates})
             self.queue.put({"score": self.score})
 
+        # verifies that snake ate prey when going up and down
         if self.direction == "Up" or self.direction == "Down":
 
             if all(x < y for x, y in zip(distance_between, (
@@ -203,18 +204,18 @@ class Game():
             It is used by the move() method.
         """
         lastX, lastY = self.snakeCoordinates[-1]
-        #everything under this was implemented
+        # changes the snake coordinates depending on input
         if self.direction == "Left":
-            lastX = lastX - SNAKE_ICON_LENGTH
+            lastX -= SNAKE_ICON_LENGTH
 
         elif self.direction == "Right":
-            lastX = lastX + SNAKE_ICON_LENGTH
+            lastX += SNAKE_ICON_LENGTH
 
         elif self.direction == "Up":
-            lastY = lastY - SNAKE_ICON_LENGTH
+            lastY -= SNAKE_ICON_LENGTH
 
         else:
-            lastY = lastY + SNAKE_ICON_LENGTH
+            lastY += SNAKE_ICON_LENGTH
 
         return (lastX, lastY)
 
@@ -227,7 +228,7 @@ class Game():
             field and also adds a "game_over" task to the queue.
         """
         x, y = snakeCoordinates
-        #returns game over if snake body is in the same position as the window's border, False otherwise
+        # returns game over if snake body is in the same position as the window's border, False otherwise
         if x < 0 or x > WINDOW_WIDTH or y < 0 or y > WINDOW_HEIGHT or snakeCoordinates in self.snakeCoordinates:
             self.gameNotOver = False
             self.queue.put({"game_over"})
