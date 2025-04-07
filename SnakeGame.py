@@ -166,42 +166,32 @@ class Game():
 
         self.snakeCoordinates.append(NewSnakeCoordinates)
 
-        # distance_between = tuple(map(lambda i, j: abs(i - j), NewSnakeCoordinates, self.prey))
+        distance_between = tuple(map(lambda i, j: abs(i - j), NewSnakeCoordinates, self.prey))
 
-        head_x, head_y = NewSnakeCoordinates
-        snakeBody = (
-            head_x - SNAKE_ICON_LENGTH / 2,
-            head_y - SNAKE_ICON_WIDTH / 2,
-            head_x + SNAKE_ICON_LENGTH / 2,
-            head_y + SNAKE_ICON_WIDTH / 2
-        )
+        if self.direction == "Left" or self.direction == "Right":
 
-        prey_x, prey_y = self.prey
-        prey_side = PREY_ICON_WIDTH / 2
-        prey_rect = (
-            prey_x - prey_side, 
-            prey_y - prey_side, 
-            prey_x + prey_side, 
-            prey_y + prey_side
-        )
-
-        if not (
-            snakeBody[2] < prey_rect[0] or
-            snakeBody[0] > prey_rect[2] or
-            snakeBody[3] < prey_rect[1] or
-            snakeBody[1] > prey_rect[3]
-        ):
+            if all(x < y for x, y in zip(distance_between, ((PREY_ICON_WIDTH+SNAKE_ICON_LENGTH)/2, (PREY_ICON_WIDTH+SNAKE_ICON_WIDTH)/2))):
                 self.score += 1
                 self.createNewPrey()
-        # if all(x < y for x, y in zip(distance_between, ((PREY_ICON_WIDTH+SNAKE_ICON_LENGTH)/2, (PREY_ICON_WIDTH+SNAKE_ICON_WIDTH)/2))):
-        #     self.score += 1
-        #     self.createNewPrey()
 
-        else:
-            self.snakeCoordinates.pop(0)
+            else:
+                self.snakeCoordinates.pop(0)
 
-        self.queue.put({"move": self.snakeCoordinates})
-        self.queue.put({"score": self.score})
+            self.queue.put({"move": self.snakeCoordinates})
+            self.queue.put({"score": self.score})
+
+        if self.direction == "Up" or self.direction == "Down":
+
+            if all(x < y for x, y in zip(distance_between, (
+            (PREY_ICON_WIDTH + SNAKE_ICON_WIDTH) / 2, (PREY_ICON_WIDTH + SNAKE_ICON_LENGTH) / 2))):
+                self.score += 1
+                self.createNewPrey()
+
+            else:
+                self.snakeCoordinates.pop(0)
+
+            self.queue.put({"move": self.snakeCoordinates})
+            self.queue.put({"score": self.score})
 
     def calculateNewCoordinates(self) -> tuple:
         """
@@ -267,7 +257,7 @@ class Game():
             for item in self.snakeCoordinates:
                 distance_between = tuple(map(lambda i, j: abs(i - j), item, self.prey))
                 # ensures that the prey is not created under the snake's body or under score board
-                if all(x < y for x, y in zip(distance_between, ((PREY_ICON_WIDTH+SNAKE_ICON_LENGTH)/2, (PREY_ICON_WIDTH+SNAKE_ICON_WIDTH)/2)) or x_min <= x <= x_max or y_min <= y <= y_max):
+                if all(x < y for x, y in zip(distance_between, ((PREY_ICON_WIDTH+SNAKE_ICON_LENGTH)/2, (PREY_ICON_WIDTH+SNAKE_ICON_WIDTH)/2)) and x_min <= x <= x_max and y_min <= y <= y_max):
                     break
                 Overlap = False
         # adds prey to window when no overlap
