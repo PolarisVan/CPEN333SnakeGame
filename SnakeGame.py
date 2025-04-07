@@ -246,8 +246,7 @@ class Game():
         """
         THRESHOLD = 15  # sets how close prey can be to borders
         # assumes initial overlapping to be checked
-        x_min, y_min = 0,0
-        x_max, y_max = 60,25
+        x_max, y_max = 110,25
 
         Overlap = True
         while Overlap:
@@ -255,7 +254,6 @@ class Game():
             x = random.randint(THRESHOLD, WINDOW_WIDTH - THRESHOLD)
             y = random.randint(THRESHOLD, WINDOW_HEIGHT - THRESHOLD)
             greater_edge = max(SNAKE_ICON_LENGTH,SNAKE_ICON_WIDTH)
-            print(x,y)
             self.prey = (x, y)
 
             Overlap = False
@@ -277,7 +275,7 @@ if __name__ == "__main__":
     # some constants for our GUI
     WINDOW_WIDTH = 500
     WINDOW_HEIGHT = 300
-    SNAKE_ICON_WIDTH = 50
+    SNAKE_ICON_WIDTH = 15
     SNAKE_ICON_LENGTH = 10  # Constant(should not change) implemented
     PREY_ICON_WIDTH = 10 # implemented
 
