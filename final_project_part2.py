@@ -1,25 +1,24 @@
-# Group #:
-# Student names:
+# Group #: B21
+# Student names: Peiyu Qu and Dalisio Pereira
 
 import threading
 import queue
 import time, random
 
 
-def consumerWorker(queue: queue):
+def consumerWorker(queue: queue) -> None:
     """target worker for a consumer thread"""
     while True:
-        try:
-            item = queue.get(timeout=1)
-            print(f"[Consumer-{threading.current_thread().name}] Consumed: {item}")
-            time.sleep(random.uniform(0.1, 0.5))  # Simulate variable processing time
+        item = queue.get()
+        if item is None:
+            print(f"[Consumer-{threading.current_thread().name}] Exiting.")
             queue.task_done()
-        except:
-            # Assume all producers are done and queue is empty
             break
+        print(f"[Consumer-{threading.current_thread().name}] Consumed: {item}")
+        time.sleep(random.uniform(0.1, 0.5))  # Simulate variable processing time
+        queue.task_done()
 
-
-def producerWorker(queue: queue):
+def producerWorker(queue: queue) -> None:
     """target worker for a producer thread"""
     for i in range (5):
         queue.put(random.randint(0,5))
