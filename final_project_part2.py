@@ -33,7 +33,7 @@ if __name__ == "__main__":
         thread_list.append(threading.Thread(target=consumerWorker, args=(buffer,i)))
 
     for i in range(num_producer):
-        thread_list.append(threading.Thread(target=producerWorker, args=(buffer)))
+        thread_list.append(threading.Thread(target=producerWorker, args=(buffer, )))
 
     for i in thread_list:
         i.start()
