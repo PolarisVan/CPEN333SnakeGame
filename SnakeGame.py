@@ -125,7 +125,7 @@ class Game():
             Use the SPEED constant to set how often the move tasks
             are generated.
         """
-        SPEED = 0.15  # speed of snake updates (sec)
+        SPEED = 0.05  # speed of snake updates (sec)
         while self.gameNotOver:
             self.move()
             time.sleep(SPEED)  # frame rate
@@ -229,7 +229,7 @@ class Game():
         """
         x, y = snakeCoordinates
         #returns game over if snake body is in the same position as the window's border, False otherwise
-        if x < 0 or x > WINDOW_WIDTH or y < 0 or y > WINDOW_HEIGHT or snakeCoordinates in self.snakeCoordinates:
+        if (x - SNAKE_ICON_LENGTH/2) < 0 or (x + SNAKE_ICON_LENGTH/2) > WINDOW_WIDTH or (y - SNAKE_ICON_LENGTH/2) < 0 or (y + SNAKE_ICON_LENGTH/2) > WINDOW_HEIGHT or snakeCoordinates in self.snakeCoordinates:
             self.gameNotOver = False
             self.queue.put({"game_over"})
 
