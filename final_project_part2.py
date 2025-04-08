@@ -7,18 +7,18 @@ import time, random
 
 def consumerWorker(queue: object, id: int) -> None:
     """target worker for a consumer thread"""
-    global task_number
+    global task_number # tracker for remaining tasks
     while task_number >= id + 1:
-        task_number = task_number - 1
+        task_number = task_number - 1 # subtracts one task as it is completed
         item = queue.get()
         print(f"[Consumer-{threading.current_thread().name}] Consumed: {item}")
-        time.sleep(random.uniform(0.1, 0.5))  # Simulate variable processing time
+        time.sleep(random.uniform(0.1, 0.5))  # simulates variable processing time
         queue.task_done()
 
 def producerWorker(queue: object) -> None:
     """target worker for a producer thread"""
     for i in range (5):
-        item = random.randint(0,5)
+        item = random.randint(0,5) # picks a random item to be added to buffer
         queue.put(item)
         print(f"[Producer-{threading.current_thread().name}] Produced: {item}")
         time.sleep(random.randint(1,2))
