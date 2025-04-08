@@ -125,7 +125,7 @@ class Game():
             Use the SPEED constant to set how often the move tasks
             are generated.
         """
-        SPEED = 0.05  # speed of snake updates (sec)
+        SPEED = 0.1  # speed of snake updates (sec)
         while self.gameNotOver:
             self.move()
             time.sleep(SPEED)  # frame rate
@@ -181,7 +181,7 @@ class Game():
             self.queue.put({"move": self.snakeCoordinates})
             self.queue.put({"score": self.score})
 
-        if self.direction == "Up" or self.direction == "Down":
+        else:
 
             if all(x < y for x, y in zip(distance_between, (
             (PREY_ICON_WIDTH + SNAKE_ICON_WIDTH) / 2, (PREY_ICON_WIDTH + SNAKE_ICON_LENGTH) / 2))):
@@ -229,9 +229,16 @@ class Game():
         """
         x, y = snakeCoordinates
         #returns game over if snake body is in the same position as the window's border, False otherwise
-        if (x - SNAKE_ICON_LENGTH/2) < 0 or (x + SNAKE_ICON_LENGTH/2) > WINDOW_WIDTH or (y - SNAKE_ICON_LENGTH/2) < 0 or (y + SNAKE_ICON_LENGTH/2) > WINDOW_HEIGHT or snakeCoordinates in self.snakeCoordinates:
-            self.gameNotOver = False
-            self.queue.put({"game_over"})
+
+        if self.direction == "Left" or self.direction == "Right":
+            if x - SNAKE_ICON_LENGTH/2 < 0 or x + SNAKE_ICON_LENGTH/2 > WINDOW_WIDTH or y - SNAKE_ICON_WIDTH/2 < 0 or y + SNAKE_ICON_WIDTH/2 > WINDOW_HEIGHT or snakeCoordinates in self.snakeCoordinates:
+                self.gameNotOver = False
+                self.queue.put({"game_over"})
+
+        else:
+            if x - SNAKE_ICON_WIDTH/2 < 0 or x + SNAKE_ICON_WIDTH/2 > WINDOW_WIDTH or y - SNAKE_ICON_LENGTH/2 < 0 or y + SNAKE_ICON_LENGTH/2 > WINDOW_HEIGHT or snakeCoordinates in self.snakeCoordinates:
+                self.gameNotOver = False
+                self.queue.put({"game_over"})
 
     def createNewPrey(self) -> None:
         """
@@ -246,7 +253,7 @@ class Game():
         """
         THRESHOLD = 15  # sets how close prey can be to borders
         # assumes initial overlapping to be checked
-        x_max, y_max = 110,25
+        x_max, y_max = 60,25
 
         Overlap = True
         while Overlap:
@@ -275,7 +282,7 @@ if __name__ == "__main__":
     # some constants for our GUI
     WINDOW_WIDTH = 500
     WINDOW_HEIGHT = 300
-    SNAKE_ICON_WIDTH = 15
+    SNAKE_ICON_WIDTH = 100
     SNAKE_ICON_LENGTH = 10  # Constant(should not change) implemented
     PREY_ICON_WIDTH = 10 # implemented
 
