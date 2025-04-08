@@ -283,8 +283,8 @@ if __name__ == "__main__":
     # some constants for our GUI
     WINDOW_WIDTH = 500
     WINDOW_HEIGHT = 300
-    SNAKE_ICON_WIDTH = 100
-    SNAKE_ICON_LENGTH = 10  # Constant(should not change) implemented
+    SNAKE_ICON_WIDTH = 15
+    SNAKE_ICON_LENGTH = 15  # Constant(should not change) implemented
     PREY_ICON_WIDTH = 10 # implemented
 
     BACKGROUND_COLOUR = "green"  # you may change this colour if you wish
