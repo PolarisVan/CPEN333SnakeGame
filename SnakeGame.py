@@ -253,7 +253,7 @@ class Game():
         """
         THRESHOLD = 15  # sets how close prey can be to borders
         # assumes initial overlapping to be checked
-        x_max, y_max = 60,25
+        x_max, y_max = 110,25
 
         Overlap = True
         while Overlap:
