@@ -18,7 +18,9 @@ def consumerWorker(queue: object, id: int):
 def producerWorker(queue: object, id: int):
     """target worker for a producer thread"""
     for i in range (5):
-        queue.put(random.randint(0,5))
+        item = random.randint(0,5)
+        queue.put(item)
+        print(f"[Producer-{threading.current_thread().name}] Produced: {item}")
         time.sleep(random.randint(1,2))
 
 if __name__ == "__main__":
