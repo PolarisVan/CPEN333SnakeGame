@@ -1,10 +1,9 @@
 # Group #: B21
-# Student names:
+# Student names: Peiyu Qu and Dalisio Pereira
 
 import threading
 import queue
 import time, random
-
 
 def consumerWorker(queue: object, id: int):
     """target worker for a consumer thread"""
@@ -17,9 +16,6 @@ def consumerWorker(queue: object, id: int):
         time.sleep(random.uniform(0.1, 0.5))  # Simulate variable processing time
         queue.task_done()
     print("done")
-
-
-
 
 def producerWorker(queue: object, id: int):
     """target worker for a producer thread"""
@@ -44,5 +40,3 @@ if __name__ == "__main__":
 
     for i in thread_list:
         i.join()
-
-    print("done")
